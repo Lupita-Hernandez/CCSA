@@ -7,13 +7,10 @@ import {Button} from 'primereact/button';
 import {Toolbar} from 'primereact/toolbar' ;
 import {IconField} from 'primereact/iconfield' ;
 import {InputIcon} from 'primereact/inputicon'; 
-import { RadioButton, RadioButtonChangeEvent } from 'primereact/radiobutton';
-import {InputNumber, InputNumberValueChangeEvent} from 'primereact/inputnumber' ;
 import {Dialog} from 'primereact/dialog';
 import {InputText} from 'primereact/inputtext' ;
 import RolService from '../Services/RolService';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
-import { Checkbox } from 'primereact/checkbox';
 import UsuarioService from '../Services/UsuarioService';
 
 //interfaz para modelar a los clientes
@@ -88,7 +85,7 @@ export default function CRUDRol() {
         setDeleteRolDialog(false);
     };
 
-    const saveProduct = () => {
+    const saveRol = async () => {
         setSubmitted(true);
         if (rol.nombreRol.trim()) {
             const _roles = [...roles];
@@ -128,7 +125,7 @@ export default function CRUDRol() {
 
     const editRol = async (rol: Rol) => {
         setRol({...rol});
-        setSelectedPermisos({"permisos": rol.permisos});
+        setSelectedPermisos({"permiso": rol.permisos});
         await RolService.findUsuarioById(rol.idRol).then((responseUs) => {
             setSelectedPermisos(responseUs.data);
         });
@@ -198,7 +195,7 @@ export default function CRUDRol() {
         return <Button label="Exportar" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />;
     };
 
-    const actionBodyTemplate = (rowData: Product) => {
+    const actionBodyTemplate = (rowData: Rol) => {
         return (
             <React.Fragment>
                 <Button icon="pi pi-pencil" rounded outlined className="mr-2" onClick={() => editRol(rowData)} />
@@ -224,7 +221,7 @@ export default function CRUDRol() {
             <Button label="Guardar" icon="pi pi-check" onClick={saveRol} />
         </React.Fragment>
     );
-    const deleteProductDialogFooter = (
+    const deleteRolDialogFooter = (
         <React.Fragment>
             {}
             <Button label="No" icon="pi pi-times" outlined onClick={hideDeleteRolDialog} />
@@ -252,72 +249,38 @@ export default function CRUDRol() {
             <Dialog visible={rolDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} 
             header="Detalles del rol" modal className="p-fluid" footer={rolDialogFooter} onHide={hideDialog}>
                 <div className="field">
-                    <label htmlFor="name" className="font-bold">
-                        Name
+                    <label htmlFor="Nombre Rol" className="font-bold">
+                        NombreRol
                     </label>
-                    <InputText id="name" value={product.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.name })} />
-                    {submitted && !product.name && <small className="p-error">Name is required.</small>}
-                </div>
-                <div className="field">
-                    <label htmlFor="description" className="font-bold">
-                        Description
-                    </label>
-                    <InputTextarea id="description" value={product.description} onChange={(e:ChangeEvent<HTMLTextAreaElement>) => onInputTextAreaChange(e, 'description')} required rows={3} cols={20} />
+                    <InputText id="Nombre Rol" value={rol.nombreRol} onChange={(e) => onInputChange(e)} required autoFocus className={classNames({ 'p-invalid': 
+                        submitted && !rol.nombreRol })} />
+                    {submitted && !rol.nombreRol && <small className="p-error">El cargo del rol es requerido</small>}
                 </div>
 
                 <div className="field">
-                    <label className="mb-3 font-bold">Category</label>
-                    <div className="formgrid grid">
-                        <div className="field-radiobutton col-6">
-                            <RadioButton inputId="category1" name="category" value="Accessories" onChange={onCategoryChange} checked={product.category === 'Accessories'} />
-                            <label htmlFor="category1">Accessories</label>
-                        </div>
-                        <div className="field-radiobutton col-6">
-                            <RadioButton inputId="category2" name="category" value="Clothing" onChange={onCategoryChange} checked={product.category === 'Clothing'} />
-                            <label htmlFor="category2">Clothing</label>
-                        </div>
-                        <div className="field-radiobutton col-6">
-                            <RadioButton inputId="category3" name="category" value="Electronics" onChange={onCategoryChange} checked={product.category === 'Electronics'} />
-                            <label htmlFor="category3">Electronics</label>
-                        </div>
-                        <div className="field-radiobutton col-6">
-                            <RadioButton inputId="category4" name="category" value="Fitness" onChange={onCategoryChange} checked={product.category === 'Fitness'} />
-                            <label htmlFor="category4">Fitness</label>
-                        </div>
-                    </div>
+                    <label className="font-bold block mb-2">Usuario:{
+                        selectedUsuario?.nombre}</label>
+                    <Dropdown value={selectedUsuario} onChange={
+                        onUsuarioChange} options={usuarios} optionLabel="nombre"  
+                        placeholder="Seleccione un usuario"  className="w-full md:w-14rem" />
                 </div>
 
-                <div className="formgrid grid">
-                    <div className="field col">
-                        <label htmlFor="price" className="font-bold">
-                            Price
-                        </label>
-                        <InputNumber id="price" value={product.price} onValueChange={(e) => onInputNumberChange(e, 'price')} mode="currency" currency="USD" locale="en-US" />
-                    </div>
-                    <div className="field col">
-                        <label htmlFor="quantity" className="font-bold">
-                            Quantity
-                        </label>
-                        <InputNumber id="quantity" value={product.quantity} onValueChange={(e) => onInputNumberChange(e, 'quantity')} />
-                    </div>
+                <div className="field">
+                    <label className="font-bold block mb-2">Permisos:</label>
+                    <Dropdown value={selectedPermisos} onChange={onPermisosChange} 
+                    options={permisos} optionLabel="permiso" placeholder="Seleccione un permiso" className="w-full md:w-14rem" />
                 </div>
             </Dialog>
 
-            <Dialog visible={deleteProductDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
+            <Dialog visible={deleteRolDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} 
+            header="Confirmar" modal footer={deleteRolDialogFooter} onHide={hideDeleteRolDialog}>
                 <div className="confirmation-content">
                     <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                    {product && (
+                    {rol && (
                         <span>
-                            Are you sure you want to delete <b>{product.name}</b>?
+                            ¿Estas seguro de eliminar <b>{rol.nombreRol}</b>?
                         </span>
                     )}
-                </div>
-            </Dialog>
-
-            <Dialog visible={deleteProductsDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductsDialogFooter} onHide={hideDeleteProductsDialog}>
-                <div className="confirmation-content">
-                    <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                    {product && <span>Are you sure you want to delete the selected products?</span>}
                 </div>
             </Dialog>
         </div>

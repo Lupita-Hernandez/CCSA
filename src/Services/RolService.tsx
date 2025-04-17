@@ -9,7 +9,9 @@ class RolService{
         return axios.get(URL_BASE);
     }
 
-
+    findUsuarioById(idRol: number){
+        return axios.get(URL_BASE + '/' + idRol)
+    }
     //Metodo para crear una nueva mascota
     create(rol: object){
         return axios.post(URL_BASE, rol);
