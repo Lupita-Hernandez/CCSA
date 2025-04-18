@@ -1,29 +1,29 @@
 import { useState, useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import PlanificacionService from '../Services/PlanificacionService';
+import ActividadService from '../Services/ActividadService';
 interface Planificacion {
-    idPlanificacion: number;
-    jefeUnidad: string;
-    numeroActividades: string;
-    objetivoArea: string;
+    idActividad: number;
+    descripcion: string;
+    indicadorResultados: string;
+    medioVerificacion: string;
 }
-export default function ListaPlanificacion() {
-    const [planificacion, setPlanificacion] = useState<Planificacion[]>([]);
+export default function ListaActividad() {
+    const [actividad, setActividad] = useState<Actividad[]>([]);
     useEffect(() => {
-       PlanificacionService.findAll().then(Response => {
-            setPlanificacion(Response.data);
+       ActividadService.findAll().then(Response => {
+            setActividad(Response.data);
         }).catch(error => {
             console.log(error);
         })
     }, []);
     return (
         <div className="card">
-            <DataTable value={planificacion} tableStyle={{ minWidth: '50rem' }}>
-                <Column field='idPlanificacion' header="ID"></Column>
-                <Column field='jefeUnidad' header="Jefe Unida"></Column>
-                <Column field='numeroActividades' header="Numero Actividades"></Column>
-                <Column field='objetivoArea' header="Objetivo Area"></Column>
+            <DataTable value={actividad} tableStyle={{ minWidth: '50rem' }}>
+                <Column field='idActividad' header="ID Actividad"></Column>
+                <Column field='descripcion' header="Descripcion"></Column>
+                <Column field='indicadorResultados' header="Indicador Resultados"></Column>
+                <Column field='medioVerificacion' header="Medio Verificacion"></Column>
             </DataTable>
         </div>
     );
