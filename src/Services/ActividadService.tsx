@@ -9,23 +9,23 @@ class ActividadService{
         return axios.get(URL_BASE);
     }
 
-    findUsuarioById(idPlanificacion: number){
-        return axios.get(URL_BASE + '/' + idPlanificacion);
+    findUsuarioById(idActividad: number){
+        return axios.get(URL_BASE + '/' + idActividad);
     }
     //Metodo para crear una nueva mascota
-    create(planificacion: object){
-        return axios.post(URL_BASE, planificacion);
+    create(actividad: object){
+        return axios.post(URL_BASE, actividad);
     }
 
     //Metodo para actualizar un alrticulo existente
-    update(idPlanificacion: number, planificacion: object){
-        return axios.put(URL_BASE + '/'+idPlanificacion, planificacion)
+    update(idActividad: number, actividad: object){
+        return axios.put(URL_BASE + '/'+idActividad, actividad)
     }
 
     //metodo para eliminar un articulo
-    delete(idPlanificacion: number){
-        return axios.delete(URL_BASE + '/' + idPlanificacion)
+    delete(idActividad: number){
+        return axios.delete(URL_BASE + '/' + idActividad)
     }
 }
 //se exporta la clase 
-export default new PlanificacionService();
+export default new ActividadService();
