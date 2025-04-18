@@ -1,28 +1,29 @@
 import { useState, useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import RolService from '../Services/PlanificacionService';
+import PlanificacionService from '../Services/PlanificacionService';
 interface Planificacion {
     idPlanificacion: number;
     jefeUnidad: string;
     numeroActividades: string;
-    objetivoArea
+    objetivoArea: string;
 }
 export default function ListaPlanificacion() {
-    const [planificacion, setPlanificacion] = useState<Rol[]>([]);
+    const [planificacion, setPlanificacion] = useState<Planificacion[]>([]);
     useEffect(() => {
-       RolService.findAll().then(Response => {
-            setRoles(Response.data);
+       PlanificacionService.findAll().then(Response => {
+            setPlanificacion(Response.data);
         }).catch(error => {
             console.log(error);
         })
     }, []);
     return (
         <div className="card">
-            <DataTable value={roles} tableStyle={{ minWidth: '50rem' }}>
-                <Column field='idRol' header="ID"></Column>
-                <Column field='nombreRol' header="Nombre Rol"></Column>
-                <Column field='permisos' header="Permisos"></Column>
+            <DataTable value={planificacion} tableStyle={{ minWidth: '50rem' }}>
+                <Column field='idPlanificacion' header="ID"></Column>
+                <Column field='jefeUnidad' header="Jefe Unida"></Column>
+                <Column field='numeroActividades' header="Numero Actividades"></Column>
+                <Column field='objetivoArea' header="Objetivo Area"></Column>
             </DataTable>
         </div>
     );
