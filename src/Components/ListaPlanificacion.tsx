@@ -20,7 +20,7 @@ export default function ListaPlanificacion() {
     return (
         <div className="card">
             <DataTable value={planificacion} tableStyle={{ minWidth: '50rem' }}>
-                <Column field='idPlanificacion' header="ID"></Column>
+                <Column field='idPlanificacion' header="ID Planificacion"></Column>
                 <Column field='jefeUnidad' header="Jefe Unida"></Column>
                 <Column field='numeroActividades' header="Numero Actividades"></Column>
                 <Column field='objetivoArea' header="Objetivo Area"></Column>
