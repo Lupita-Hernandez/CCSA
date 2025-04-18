@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL_BASE = "http://localhost:8080/Planificacion";
+const URL_BASE = "http://localhost:8080/actividad";
 
 class ActividadService{
 
